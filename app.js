@@ -3,19 +3,12 @@ const app = express();
 const adminRouter = require("./routes/adminRouter");
 const productRouter = require("./routes/productRouter");
 const userRouter = require("./routes/userRouter");
-const { connectDB } = require("./config/database");
+const db = require("./config/database");
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/", adminRouter);
-app.use("/", productRouter);
-app.use("/", userRouter);
+app.use("/product", productRouter);
+app.use("/user", userRouter);
 
-connectDB()
-  .then(() => {
-    console.log("Connection to DB is Established");
-    app.listen(3000, () => {
-      console.log("Server connected Successfully");
-    });
-  })
-  .catch((err) => {
-    console.log("ERROR" + err.message);
-  });
+app.listen(3000);
